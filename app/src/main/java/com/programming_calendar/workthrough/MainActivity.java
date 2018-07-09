@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.graphics.Color;
 import android.content.Context;
-
 import java.util.List;
+import java.util.ArrayList;
 
 public class MainActivity extends Activity
 {
@@ -23,6 +23,10 @@ public class MainActivity extends Activity
     LinearLayout[] weeks;
     Button[] days;
     ProgHours progHours;
+    int transparent = 0;
+
+    List<Integer> colorList = new ArrayList<Integer>();
+    List<Integer> hoursList = new ArrayList<Integer>();
 
     List<ProgHours> progHoursList;
 
@@ -48,6 +52,9 @@ public class MainActivity extends Activity
 
         txt1 = (TextView) findViewById(R.id.txt1);
 
+        colorList.add(transparent);
+        hoursList.add(transparent);
+
         nextDate = new NextDate();
 
         ProgHoursDbHelper dbHelper = new ProgHoursDbHelper (this);
@@ -55,7 +62,7 @@ public class MainActivity extends Activity
 
         progHours = progHoursList.get(2);
 
-        txt1.setText(progHours.getColor() + "");
+        txt1.setText(nextDate.dateToString() + "");
 
         weekOneLayout = (LinearLayout) findViewById(R.id.calendar_week_1);
         weekTwoLayout = (LinearLayout) findViewById(R.id.calendar_week_2);
@@ -79,9 +86,8 @@ public class MainActivity extends Activity
                 ViewGroup.LayoutParams.FILL_PARENT);
         buttonParams.weight = 1;
 
-        int[] colors = {Color.TRANSPARENT,0xff7070ff,0xffffdd66};
-        int[] hours = {7,2,3};
-        final ColorBarDrawable colorBar = new ColorBarDrawable(colors,hours);
+        final ColorBarDrawable colorBar;
+
         int daysArrayCount = 0;
 
         for (int weekNumber = 0; weekNumber < 6; ++weekNumber){
@@ -92,7 +98,34 @@ public class MainActivity extends Activity
                 day.setBackgroundColor(nextDate.whatBackground());
                 day.setLayoutParams(buttonParams);
                 day.setSingleLine();
+                Toast.makeText(this, nextDate.dateToString() , Toast.LENGTH_SHORT).show();
+                for (int i = 0; i < progHoursList.size(); i++){
+                    //Toast.makeText(this,"List filled",Toast.LENGTH_SHORT).show();
+                    //		if (progHoursList.get(i).getDate() == nextDate.dateToString()){
+                    if (progHoursList.get(i).getDate() == "2018-07-10"){
+                        colorList.add(progHoursList.get(i).getColor());
+                        hoursList.add(progHoursList.get(i).getHours());
+                        Toast.makeText(this,"List fill ed " + nextDate.dateToString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
 
+                colorBar = new ColorBarDrawable(colorList,hoursList);
+
+                if (!(colorList.isEmpty())) colorList.clear();
+                if (!(hoursList.isEmpty())) hoursList.clear();
+                colorList.add(transparent);
+                hoursList.add(transparent);
+				/*
+				while(!(colorList.isEmpty())){
+					int i = 0;
+					colorList.remove(i);
+				}
+
+				while(!(hoursList.isEmpty())){
+					int i = 0;
+					hoursList.remove(i);
+				}
+				*/
                 days[daysArrayCount] = day;
                 weeks[weekNumber].addView(day);
 

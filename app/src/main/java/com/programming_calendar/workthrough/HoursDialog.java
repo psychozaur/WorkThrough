@@ -23,6 +23,9 @@ public class HoursDialog extends Dialog
 
     ArrayAdapter<String> spinProgArrayAdapter;
 
+    int sbarProgressRead;
+    double hoursSpent;
+
     public HoursDialog (Context context) {
         super(context);
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -52,7 +55,8 @@ public class HoursDialog extends Dialog
             }
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
-                int hoursSpent = sbarHours.getProgress();
+                sbarProgressRead = sbarHours.getProgress();
+                hoursSpent = sbarProgressRead / 2.0;
                 nrHours.setText("" + hoursSpent);
             }
         });
@@ -61,7 +65,7 @@ public class HoursDialog extends Dialog
             @Override
             public void onClick(View v){
                 dismiss();
-                v.setBackground(new ColorBarDrawable(new int[]{0x00000000,0xff7070ff,0xffffdd66},new int[]{6,3,3}));
+                //v.setBackground(new ColorBarDrawable(new int[]{0x00000000,0xff7070ff,0xffffdd66},new int[]{6,3,3}));
             }
         });
 

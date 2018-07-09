@@ -6,14 +6,15 @@ import android.graphics.ColorFilter;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.Paint;
+import java.util.List;
 
 public class ColorBarDrawable extends Drawable
 {
 
-    private int[] themeColors;
-    private int[] hoursSpent;
+    private List themeColors;
+    private List hoursSpent;
 
-    public ColorBarDrawable (int[] themeColors, int[] hoursSpent){
+    public ColorBarDrawable (List themeColors, List hoursSpent){
         this.themeColors = themeColors;
         this.hoursSpent = hoursSpent;
     }
@@ -29,21 +30,29 @@ public class ColorBarDrawable extends Drawable
         Paint backgroundPaint = new Paint();
 
         int top = 0;
-        int barHeightRemainder = height % themeColors.length;
+        int barHeightRemainder = height % themeColors.size() ;
 
         int totalHours = 12;
 
-        for (int i = 0; i < themeColors.length; i++){
-            backgroundPaint.setColor(themeColors[i]);
+        for (int i = 0; i < themeColors.size() ; i++){
+            backgroundPaint.setColor(themeColors.get(i));
             canvas.drawRect(0,top,width,
-                    top + (int)((1.0 * hoursSpent[i] / totalHours) * height),
+                    top + (int)((1.0 * (int) hoursSpent.get(i) / totalHours) * height),
                     backgroundPaint);
-            top += (int)((1.0 * hoursSpent[i] / totalHours) * height);
+            top += (int)((1.0 * (int) hoursSpent.get(i) / totalHours) * height);
         }
 
         if (barHeightRemainder > 0){
             canvas.drawRect(0,height - barHeightRemainder,width,height,backgroundPaint);
         }
+
+        backgroundPaint.setColor(0xffffffff);
+        canvas.drawOval(width/4,
+                (height/2 - width/4),
+                (width - width/4),
+                (height/2 + width/4),
+                backgroundPaint);
+
     }
 
     @Override
