@@ -1,14 +1,15 @@
 package com.programming_calendar.workthrough;
 
-pimport java.time.LocalDate;
-import java.time.DayOfWeek;
+import java.util.Calendar;
 import android.graphics.Color;
 
 public class NextDate
 {
-    private LocalDate rightNow;
+    private Calendar rightNow;
 
-    private DayOfWeek dayOfWeekOfTheFirstDayOfMonth;
+    private int dayOfWeekOfTheFirstDayOfMonth;
+    private int daysSinceMonday;
+    private int[] convertWeekDays;
 
     private int currentDayOfMonth;
     private int currentMonth;
@@ -24,38 +25,54 @@ public class NextDate
 
     public NextDate ()
     {
-        this.rightNow = LocalDate.now ();
+        this.rightNow = Calendar.getInstance ();
 
-        this.dayOfWeekOfTheFirstDayOfMonth =
-                rightNow.withDayOfMonth (1).getDayOfWeek ();
-
-        this.currentDayOfMonth = rightNow.getDayOfMonth ();
-        this.currentMonth = rightNow.getMonthValue ();
-        this.currentYear = rightNow.getYear ();
+        this.currentDayOfMonth = rightNow.get(Calendar.DAY_OF_MONTH);
+        this.currentMonth = rightNow.get(Calendar.MONTH);
+        this.currentYear = rightNow.get(Calendar.YEAR);
 
         this.chosenDayOfMonth = currentDayOfMonth;
         this.chosenMonth = currentMonth;
         this.chosenYear = currentYear;
 
-        rightNow =
-                rightNow.withDayOfMonth (1).minusDays (dayOfWeekOfTheFirstDayOfMonth.
-                        getValue () -
-                        DayOfWeek.MONDAY.getValue ());
+        this.convertWeekDays = new int[] {Calendar.MONDAY, Calendar.TUESDAY, Calendar.WEDNESDAY, Calendar.THURSDAY, Calendar.FRIDAY, Calendar.SATURDAY, Calendar.SUNDAY};
+
+        //set calendar to the 1st day of the month
+        rightNow.set(currentYear,currentMonth,1);
+
+        //get the day of week of the 1st day of this month
+        this.dayOfWeekOfTheFirstDayOfMonth = rightNow.get(Calendar.DAY_OF_WEEK);
+        this.daysSinceMonday = countDaysSinceMonday();
+
+        //set calendar to Monday before the 1st (or do nothing if 1st was on Monday)
+        rightNow.add(Calendar.DAY_OF_MONTH,-1*(daysSinceMonday));
+        currentDayOfMonth = rightNow.get(Calendar.DAY_OF_MONTH);
     }
 
     public void addOneDay ()
     {
-        rightNow = rightNow.plusDays (1);
+        rightNow.add(Calendar.DAY_OF_MONTH,1);
+        currentDayOfMonth = rightNow.get(Calendar.DAY_OF_MONTH);
+    }
+
+    public int countDaysSinceMonday()
+    {
+        int result = 0;
+        for (int i = 0; i < convertWeekDays.length; i++)
+        {
+            if (dayOfWeekOfTheFirstDayOfMonth == convertWeekDays[i]) result = i;
+        }
+        return result;
     }
 
     public int whatTextColor ()
     {
-        if (currentMonth == rightNow.getMonthValue ())
+        if (currentMonth == rightNow.get(Calendar.MONTH))
         {
             buttonColor = Color.BLACK;
-            if (chosenDayOfMonth == rightNow.getDayOfMonth () &&
-                    chosenMonth == rightNow.getMonthValue () &&
-                    chosenYear == rightNow.getYear ())
+            if (chosenDayOfMonth == rightNow.get(Calendar.DAY_OF_MONTH) &&
+                    chosenMonth == rightNow.get(Calendar.MONTH) &&
+                    chosenYear == rightNow.get(Calendar.YEAR))
                 buttonColor = Color.WHITE;
         }
         else
@@ -65,9 +82,9 @@ public class NextDate
 
     public int whatBackground ()
     {
-        if (chosenDayOfMonth == rightNow.getDayOfMonth () &&
-                chosenMonth == rightNow.getMonthValue () &&
-                chosenYear == rightNow.getYear ())
+        if (chosenDayOfMonth == rightNow.get(Calendar.DAY_OF_MONTH) &&
+                chosenMonth == rightNow.get(Calendar.MONTH) &&
+                chosenYear == rightNow.get(Calendar.YEAR))
             buttonBackground = Color.GREEN;
         else
             buttonBackground = Color.TRANSPARENT;
@@ -76,7 +93,7 @@ public class NextDate
 
     public String getDayNumber ()
     {
-        dayNumberString = "" + rightNow.getDayOfMonth ();
+        dayNumberString = "" + currentDayOfMonth;
         return dayNumberString;
     }
 
