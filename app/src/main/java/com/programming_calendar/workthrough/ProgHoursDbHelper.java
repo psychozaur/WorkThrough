@@ -76,9 +76,9 @@ public class ProgHoursDbHelper extends SQLiteOpenHelper {
             do {
                 ProgHours progHours = new ProgHours();
                 progHours.setDate(c.getString(c.getColumnIndex(ProgHoursTable.COLUMN_DATE)));
-                progHours.setColor(c.getString(c.getColumnIndex(ProgHoursTable.COLUMN_COLOR)));
+                progHours.setColor(c.getInt(c.getColumnIndex(ProgHoursTable.COLUMN_COLOR)));
                 progHours.setJob(c.getString(c.getColumnIndex(ProgHoursTable.COLUMN_JOB)));
-                progHours.setHours(c.getString(c.getColumnIndex(ProgHoursTable.COLUMN_HOURS)));
+                progHours.setHours(c.getInt(c.getColumnIndex(ProgHoursTable.COLUMN_HOURS)));
                 progHoursList.add(progHours);
             } while (c.moveToNext());
         }
