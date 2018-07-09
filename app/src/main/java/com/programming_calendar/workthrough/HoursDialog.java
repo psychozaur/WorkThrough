@@ -1,4 +1,4 @@
-package com.calendar.programming;
+package com.programming_calendar.workthrough;
 
 import android.app.Dialog;
 import android.view.LayoutInflater;
