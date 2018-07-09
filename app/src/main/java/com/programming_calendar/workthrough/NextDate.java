@@ -1,6 +1,8 @@
 package com.programming_calendar.workthrough;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import android.graphics.Color;
 
 public class NextDate
@@ -19,6 +21,7 @@ public class NextDate
     private int chosenMonth;
     private int chosenYear;
 
+    private String dateTime;
     private int buttonColor;
     private int buttonBackground;
     private String dayNumberString;
@@ -49,6 +52,17 @@ public class NextDate
         currentDayOfMonth = rightNow.get(Calendar.DAY_OF_MONTH);
     }
 
+    public String dateToString ()
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat ("yyyy-MM-dd");
+        try {
+            dateTime = dateFormat.format(rightNow.getTime());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return dateTime;
+    }
+
     public void addOneDay ()
     {
         rightNow.add(Calendar.DAY_OF_MONTH,1);
@@ -73,7 +87,7 @@ public class NextDate
             if (chosenDayOfMonth == rightNow.get(Calendar.DAY_OF_MONTH) &&
                     chosenMonth == rightNow.get(Calendar.MONTH) &&
                     chosenYear == rightNow.get(Calendar.YEAR))
-                buttonColor = Color.WHITE;
+                buttonColor = Color.GREEN;
         }
         else
             buttonColor = Color.GRAY;
@@ -82,12 +96,14 @@ public class NextDate
 
     public int whatBackground ()
     {
-        if (chosenDayOfMonth == rightNow.get(Calendar.DAY_OF_MONTH) &&
-                chosenMonth == rightNow.get(Calendar.MONTH) &&
-                chosenYear == rightNow.get(Calendar.YEAR))
-            buttonBackground = Color.GREEN;
-        else
-            buttonBackground = Color.TRANSPARENT;
+/*
+  if (chosenDayOfMonth == rightNow.get(Calendar.DAY_OF_MONTH) &&
+	    chosenMonth == rightNow.get(Calendar.MONTH) &&
+	    chosenYear == rightNow.get(Calendar.YEAR))
+      buttonBackground = Color.GREEN;
+    else
+*/
+        buttonBackground = Color.TRANSPARENT;
         return buttonBackground;
     }
 
