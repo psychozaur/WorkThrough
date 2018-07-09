@@ -1,3 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">WorkThrough</string>
+
+    <string name="app_name">Progrendar</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="choose">Choose a programming activity</string>
+    <string name="hours">Hours spent</string>
+    <string name="confirm">Confirm</string>
+
+    <string-array name="programming_array">
+        <item>Python</item>
+        <item>Git/GitHub</item>
+        <item>Android: kalendarz</item>
+    </string-array>
+
 </resources>
