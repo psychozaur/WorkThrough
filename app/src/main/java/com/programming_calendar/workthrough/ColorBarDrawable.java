@@ -35,7 +35,7 @@ public class ColorBarDrawable extends Drawable
         int totalHours = 12;
 
         for (int i = 0; i < themeColors.size() ; i++){
-            backgroundPaint.setColor(themeColors.get(i));
+            backgroundPaint.setColor((int)themeColors.get(i));
             canvas.drawRect(0,top,width,
                     top + (int)((1.0 * (int) hoursSpent.get(i) / totalHours) * height),
                     backgroundPaint);

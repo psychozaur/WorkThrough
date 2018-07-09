@@ -23,6 +23,7 @@ public class MainActivity extends Activity
     LinearLayout[] weeks;
     Button[] days;
     ProgHours progHours;
+    ColorBarDrawable colorBar;
     int transparent = 0;
 
     List<Integer> colorList = new ArrayList<Integer>();
@@ -85,8 +86,6 @@ public class MainActivity extends Activity
                 ViewGroup.LayoutParams.FILL_PARENT,
                 ViewGroup.LayoutParams.FILL_PARENT);
         buttonParams.weight = 1;
-
-        final ColorBarDrawable colorBar;
 
         int daysArrayCount = 0;
 
