@@ -56,6 +56,8 @@ public class ProgHoursDbHelper extends SQLiteOpenHelper {
         addProgHours(ph4);
         ProgHours ph5 = new ProgHours("2018-07-11", 0xff00a813, "Python", 2);
         addProgHours(ph5);
+        ProgHours ph6 = new ProgHours("2018-08-05", 0xff7070ff, "kalendarz Android/Java", 8);
+        addProgHours(ph6);
     }
 
     private void addProgHours(ProgHours progHours) {
@@ -86,4 +88,25 @@ public class ProgHoursDbHelper extends SQLiteOpenHelper {
         c.close();
         return progHoursList;
     }
+
+	public int countProductiveHours (String date){
+		int totalProductiveHours = 0;
+		db = getReadableDatabase();
+        Cursor c = db.rawQuery(
+			"SELECT SUM(" + 
+			ProgHoursTable.COLUMN_HOURS + 
+			") FROM " + ProgHoursTable.TABLE_NAME +
+			" WHERE " + ProgHoursTable.COLUMN_DATE +
+			"=\"" + date + "\"", 
+			null);
+		if (c.moveToFirst()) {
+            do {
+                totalProductiveHours = c.getInt(
+					c.getColumnIndex("SUM(" + 
+					ProgHoursTable.COLUMN_HOURS + 
+					")"));
+            } while (c.moveToNext());
+        }
+		return totalProductiveHours;
+	}
 }

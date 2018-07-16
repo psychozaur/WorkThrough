@@ -13,62 +13,62 @@ import android.content.Context;
 
 public class HoursDialog extends Dialog
 {
-    LayoutInflater inflater;
-    View layout;
+		LayoutInflater inflater;
+		View layout;
+		
+		Spinner spinProg;
+		final SeekBar sbarHours;
+		final TextView nrHours;
+		Button btnConfirm;
+		
+		ArrayAdapter<String> spinProgArrayAdapter;
 
-    Spinner spinProg;
-    final SeekBar sbarHours;
-    final TextView nrHours;
-    Button btnConfirm;
+		int sbarProgressRead;
+		double hoursSpent;
+		
+		public HoursDialog (Context context) {
+			super(context);
+			inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			layout = inflater.inflate(R.layout.hours_dialog, (ViewGroup) findViewById(R.id.hoursDialogRoot));
+			this.setContentView(layout);
 
-    ArrayAdapter<String> spinProgArrayAdapter;
+			spinProg = (Spinner) layout.findViewById(R.id.spinProg);
+			sbarHours = (SeekBar) layout.findViewById(R.id.sbarHours);
+			nrHours = (TextView) layout.findViewById(R.id.nrHours);
+			btnConfirm = (Button) layout.findViewById(R.id.btnConfirm);
 
-    int sbarProgressRead;
-    double hoursSpent;
+			spinProgArrayAdapter =
+			new ArrayAdapter<String>(context, 
+									android.R.layout.simple_spinner_item,
+									context.getResources().getStringArray(R.array.programming_array));
+			spinProgArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			spinProg.setAdapter(spinProgArrayAdapter);
 
-    public HoursDialog (Context context) {
-        super(context);
-        inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        layout = inflater.inflate(R.layout.hours_dialog, (ViewGroup) findViewById(R.id.hoursDialogRoot));
-        this.setContentView(layout);
+		sbarHours.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar){
+				
+			}
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar){
 
-        spinProg = (Spinner) layout.findViewById(R.id.spinProg);
-        sbarHours = (SeekBar) layout.findViewById(R.id.sbarHours);
-        nrHours = (TextView) layout.findViewById(R.id.nrHours);
-        btnConfirm = (Button) layout.findViewById(R.id.btnConfirm);
-
-        spinProgArrayAdapter =
-                new ArrayAdapter<String>(context,
-                        android.R.layout.simple_spinner_item,
-                        context.getResources().getStringArray(R.array.programming_array));
-        spinProgArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinProg.setAdapter(spinProgArrayAdapter);
-
-        sbarHours.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar){
-
-            }
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar){
-
-            }
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
-                sbarProgressRead = sbarHours.getProgress();
-                hoursSpent = sbarProgressRead / 2.0;
-                nrHours.setText("" + hoursSpent);
-            }
-        });
-
-        btnConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
-                dismiss();
-                //v.setBackground(new ColorBarDrawable(new int[]{0x00000000,0xff7070ff,0xffffdd66},new int[]{6,3,3}));
-            }
-        });
-
-        show();
-    }
+			}
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
+				sbarProgressRead = sbarHours.getProgress();
+				hoursSpent = sbarProgressRead / 2.0;
+				nrHours.setText("" + hoursSpent);
+			}
+		});
+		
+		btnConfirm.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v){
+				dismiss();
+				//v.setBackground(new ColorBarDrawable(new int[]{0x00000000,0xff7070ff,0xffffdd66},new int[]{6,3,3}));
+			}
+		});
+		
+		show();
+	} 
 }
