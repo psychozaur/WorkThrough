@@ -11,6 +11,8 @@ import android.widget.SeekBar;
 import android.widget.ArrayAdapter;
 import android.content.Context;
 
+import java.util.List;
+
 public class HoursDialog extends Dialog
 {
 		LayoutInflater inflater;
@@ -24,9 +26,20 @@ public class HoursDialog extends Dialog
 		ArrayAdapter<String> spinProgArrayAdapter;
 
 		int sbarProgressRead;
-		double hoursSpent;
+		double hoursSelected;
+		int colorSelected;
+		String[] tasksArray;
+
+		public void updateLists (double hoursSelected, int colorSelected, List themeColors, List hoursSpent){
+
+			for (int i = 0; i < themeColors.size(); i++){
+				if (themeColors.get(i).equals(colorSelected)) {
+					hoursSpent.set(i,((Double) hoursSpent.get(i)).doubleValue() + hoursSelected );
+				}
+			}
+		}
 		
-		public HoursDialog (Context context) {
+		public HoursDialog (Context context, List dayProgHoursList) {
 			super(context);
 			inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			layout = inflater.inflate(R.layout.hours_dialog, (ViewGroup) findViewById(R.id.hoursDialogRoot));
@@ -37,12 +50,28 @@ public class HoursDialog extends Dialog
 			nrHours = (TextView) layout.findViewById(R.id.nrHours);
 			btnConfirm = (Button) layout.findViewById(R.id.btnConfirm);
 
+			tasksArray = context.getResources().getStringArray(R.array.programming_array);
+
 			spinProgArrayAdapter =
 			new ArrayAdapter<String>(context, 
 									android.R.layout.simple_spinner_item,
-									context.getResources().getStringArray(R.array.programming_array));
+									tasksArray);
 			spinProgArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			spinProg.setAdapter(spinProgArrayAdapter);
+
+			switch (spinProg.getSelectedItemPosition()){
+				case 0:
+					colorSelected = 0xff00a813;
+					break;
+				case 1:
+					colorSelected = 0xffffdd66;
+					break;
+				case 2:
+					colorSelected = 0xff7070ff;
+					break;
+					default:
+						break;
+			}
 
 		sbarHours.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
 			@Override
@@ -56,8 +85,9 @@ public class HoursDialog extends Dialog
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
 				sbarProgressRead = sbarHours.getProgress();
-				hoursSpent = sbarProgressRead / 2.0;
-				nrHours.setText("" + hoursSpent);
+				hoursSelected = sbarProgressRead / 2.0;
+				nrHours.setText("" + hoursSelected);
+				updateLists(hoursSelected,colorSelected,themeColors,hoursSpent);
 			}
 		});
 		
@@ -65,7 +95,6 @@ public class HoursDialog extends Dialog
 			@Override
 			public void onClick(View v){
 				dismiss();
-				//v.setBackground(new ColorBarDrawable(new int[]{0x00000000,0xff7070ff,0xffffdd66},new int[]{6,3,3}));
 			}
 		});
 		

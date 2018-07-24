@@ -1,5 +1,5 @@
-
 package com.programming_calendar.workthrough;
+
 import android.graphics.drawable.Drawable;
 import android.graphics.PixelFormat;
 import android.graphics.ColorFilter;
@@ -7,17 +7,15 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.Paint;
 import java.util.List;
-import java.util.ArrayList;
 import android.widget.Toast;
 import android.content.Context;
 
 public class ColorBarDrawable extends Drawable
 {
 
-	private List mThemeColors;
-	private List mHoursSpent;
+		private List <ProgHours> mDayProgHoursList;
 
-	private String output;
+		private String output;
 
 		Rect bounds;
 		
@@ -30,17 +28,19 @@ public class ColorBarDrawable extends Drawable
 		int barHeightRemainder;
 		
 		int totalHours;
+		double productiveHours;
 	
 	
-		public ColorBarDrawable (List themeColors, List hoursSpent){
-			mThemeColors = new ArrayList<Integer>(themeColors);
-			mHoursSpent = new ArrayList<Integer>(hoursSpent);
+		public ColorBarDrawable (List dayProgHoursList, double productiveHours){
+
+			mDayProgHoursList = dayProgHoursList;
 
 			this.backgroundPaint = new Paint();
 
 			this.top = 0;
 
 			this.totalHours = 12;
+			this.productiveHours = productiveHours;
 		}
 
 	@Override
@@ -53,14 +53,21 @@ public class ColorBarDrawable extends Drawable
 		height = bounds.bottom - bounds.top;
 
 		top = 0;
-		barHeightRemainder = height % mThemeColors.size() ;
+		barHeightRemainder = height % mDayProgHoursList.size() ;
 
-		for (int i = 0; i < mThemeColors.size() ; i++){
-			backgroundPaint.setColor((int)mThemeColors.get(i));
+		backgroundPaint.setColor(0x00000000);
+		canvas.drawRect(0,top,width,
+		top + (int)(((totalHours - productiveHours) / totalHours) * height),
+		backgroundPaint);
+		top += (int)(((totalHours - productiveHours) / totalHours) * height);
+
+
+		for (int i = 0; i < mDayProgHoursList.size() ; i++){
+			backgroundPaint.setColor(mDayProgHoursList.get(i).getColor());
 			canvas.drawRect(0,top,width,
-				top + (int)((1.0 * (double) ((Integer) mHoursSpent.get(i)).intValue() / totalHours) * height),
+				top + (int)((mDayProgHoursList.get(i).getHours() / totalHours) * height),
 				backgroundPaint);
-			top += (int)((1.0 * (double) ((Integer) mHoursSpent.get(i)).intValue() / totalHours) * height);
+			top += (int)((mDayProgHoursList.get(i).getHours() / totalHours) * height);
 		}
 		
 		if (barHeightRemainder > 0){
@@ -96,10 +103,9 @@ public class ColorBarDrawable extends Drawable
 
 public String getString(){
 		output = "";
-		for (int i = 0; i < mThemeColors.size(); i++){
-			output += "(" + mThemeColors.get(i) + "," + mHoursSpent.get(i) + ") ";
+		for (int i = 0; i < mDayProgHoursList.size(); i++){
+			output += "(" + mDayProgHoursList.get(i).getColor() + "," + mDayProgHoursList.get(i).getHours() + ") ";
 		}
-		//output =  width + "," + height + " " + top + " " + barHeightRemainder + " " + totalHours;
 		return output;
 	}
 	
