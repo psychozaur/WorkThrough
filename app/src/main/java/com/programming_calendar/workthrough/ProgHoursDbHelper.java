@@ -32,7 +32,7 @@ public class ProgHoursDbHelper extends SQLiteOpenHelper {
                 ProgHoursTable.COLUMN_DATE + " DATE, " +
                 ProgHoursTable.COLUMN_COLOR + " INTEGER, " +
                 ProgHoursTable.COLUMN_JOB + " TEXT, " +
-                ProgHoursTable.COLUMN_HOURS + " INTEGER" +
+                ProgHoursTable.COLUMN_HOURS + " REAL" +
                 ")";
 
         db.execSQL(SQL_CREATE_PROGRAMMING_HOURS_TABLE);
@@ -89,8 +89,8 @@ public class ProgHoursDbHelper extends SQLiteOpenHelper {
         return progHoursList;
     }
 
-	public int countProductiveHours (String date){
-		int totalProductiveHours = 0;
+	public double countProductiveHours (String date){
+		double totalProductiveHours = 0;
 		db = getReadableDatabase();
         Cursor c = db.rawQuery(
 			"SELECT SUM(" + 

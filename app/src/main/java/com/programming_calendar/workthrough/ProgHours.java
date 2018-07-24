@@ -4,12 +4,12 @@ public class ProgHours {
     private String date;
     private int color;
     private String job;
-    private int hours;
+    private double hours;
 
     public ProgHours() {
     }
 
-    public ProgHours(String date, int color, String job, int hours) {
+    public ProgHours(String date, int color, String job, double hours) {
         this.date = date;
         this.color = color;
         this.job = job;
@@ -40,11 +40,11 @@ public class ProgHours {
         this.job = job;
     }
 
-    public int getHours() {
+    public double getHours() {
         return hours;
     }
 
-    public void setHours(int hours) {
+    public void setHours(double hours) {
         this.hours = hours;
     }
 }
