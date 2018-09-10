@@ -2,7 +2,7 @@ package com.programming_calendar.workthrough;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
+//import java.util.Date;
 import android.graphics.Color;
 
 public class NextDate
