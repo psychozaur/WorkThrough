@@ -1,5 +1,6 @@
 package com.programming_calendar.workthrough;
 
+
 import android.graphics.drawable.Drawable;
 import android.graphics.PixelFormat;
 import android.graphics.ColorFilter;
@@ -7,8 +8,9 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.Paint;
 import java.util.List;
-import android.widget.Toast;
-import android.content.Context;
+//import java.util.ArrayList;
+//import android.widget.Toast;
+//import android.content.Context;
 
 public class ColorBarDrawable extends Drawable
 {
@@ -27,11 +29,11 @@ public class ColorBarDrawable extends Drawable
 		int top;
 		int barHeightRemainder;
 		
-		int totalHours;
+		double mTotalHours;
 		double productiveHours;
 	
 	
-		public ColorBarDrawable (List dayProgHoursList, double productiveHours){
+		public ColorBarDrawable (List <ProgHours> dayProgHoursList, double productiveHours, double totalHours){
 
 			mDayProgHoursList = dayProgHoursList;
 
@@ -39,7 +41,7 @@ public class ColorBarDrawable extends Drawable
 
 			this.top = 0;
 
-			this.totalHours = 12;
+			this.mTotalHours = totalHours;
 			this.productiveHours = productiveHours;
 		}
 
@@ -54,20 +56,20 @@ public class ColorBarDrawable extends Drawable
 
 		top = 0;
 		barHeightRemainder = height % mDayProgHoursList.size() ;
-
+/*
 		backgroundPaint.setColor(0x00000000);
 		canvas.drawRect(0,top,width,
-		top + (int)(((totalHours - productiveHours) / totalHours) * height),
+		top + (int)(((mTotalHours - productiveHours) / mTotalHours) * height),
 		backgroundPaint);
-		top += (int)(((totalHours - productiveHours) / totalHours) * height);
-
+		top += (int)(((mTotalHours - productiveHours) / mTotalHours) * height);
+*/
 
 		for (int i = 0; i < mDayProgHoursList.size() ; i++){
 			backgroundPaint.setColor(mDayProgHoursList.get(i).getColor());
 			canvas.drawRect(0,top,width,
-				top + (int)((mDayProgHoursList.get(i).getHours() / totalHours) * height),
+				top + (int)((mDayProgHoursList.get(i).getHours() / mTotalHours) * height),
 				backgroundPaint);
-			top += (int)((mDayProgHoursList.get(i).getHours() / totalHours) * height);
+			top += (int)((mDayProgHoursList.get(i).getHours() / mTotalHours) * height);
 		}
 		
 		if (barHeightRemainder > 0){

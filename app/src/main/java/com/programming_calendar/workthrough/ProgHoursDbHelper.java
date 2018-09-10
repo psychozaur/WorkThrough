@@ -17,6 +17,7 @@ public class ProgHoursDbHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     private SQLiteDatabase db;
+	private List<ProgHours> allRecords;
 
     public ProgHoursDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -36,30 +37,50 @@ public class ProgHoursDbHelper extends SQLiteOpenHelper {
                 ")";
 
         db.execSQL(SQL_CREATE_PROGRAMMING_HOURS_TABLE);
-        fillProgHoursTable();
+        //fillProgHoursTable();
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + ProgHoursTable.TABLE_NAME);
+        //db.execSQL("DROP TABLE IF EXISTS " + ProgHoursTable.TABLE_NAME);
         onCreate(db);
     }
-
+	
+	public boolean saveOrModifyData(ProgHours ph){
+		allRecords = getAllProgHours();
+		for (int i = 0; i < allRecords.size(); i++){
+			if (ph.getDate().equals(allRecords.get(i).getDate()) && 
+				ph.getJob().equals(allRecords.get(i).getJob()))
+				{
+					db.execSQL("UPDATE " + ProgHoursTable.TABLE_NAME +
+								" SET " + ProgHoursTable.COLUMN_HOURS +
+								"=\"" + ph.getHours() + "\"" +
+								" WHERE " + ProgHoursTable.COLUMN_DATE +
+								"=\"" + ph.getDate() + "\"" +
+								" AND " + ProgHoursTable.COLUMN_JOB +
+								"=\"" + ph.getJob() + "\"");
+								return true;
+				}
+		}
+		addProgHours(ph);
+		return false;
+	}
+/*
     private void fillProgHoursTable() {
-        ProgHours ph1 = new ProgHours("2018-07-09", 0xff7070ff, "kalendarz Android/Java", 5);
+        ProgHours ph1 = new ProgHours("2018-09-09", 0xff7070ff, "Android: kalendarz", 5);
         addProgHours(ph1);
-        ProgHours ph2 = new ProgHours("2018-07-10", 0xff7070ff, "kalendarz Android/Java", 4);
+        ProgHours ph2 = new ProgHours("2018-09-10", 0xff7070ff, "Android: kalendarz", 4);
         addProgHours(ph2);
-        ProgHours ph3 = new ProgHours("2018-07-10", 0xffffdd66, "Git/GitHub", 3);
+        ProgHours ph3 = new ProgHours("2018-09-10", 0xffffdd66, "Git/GitHub", 3);
         addProgHours(ph3);
-        ProgHours ph4 = new ProgHours("2018-07-11", 0xff7070ff, "kalendarz Android/Java", 4);
+        ProgHours ph4 = new ProgHours("2018-09-11", 0xff7070ff, "Android: kalendarz", 4);
         addProgHours(ph4);
-        ProgHours ph5 = new ProgHours("2018-07-11", 0xff00a813, "Python", 2);
+        ProgHours ph5 = new ProgHours("2018-09-11", 0xff00a813, "Python", 2);
         addProgHours(ph5);
-        ProgHours ph6 = new ProgHours("2018-08-05", 0xff7070ff, "kalendarz Android/Java", 8);
+        ProgHours ph6 = new ProgHours("2018-10-05", 0xff7070ff, "Android: kalendarz", 8);
         addProgHours(ph6);
     }
-
+*/
     private void addProgHours(ProgHours progHours) {
         ContentValues cv = new ContentValues();
         cv.put(ProgHoursTable.COLUMN_DATE, progHours.getDate());
