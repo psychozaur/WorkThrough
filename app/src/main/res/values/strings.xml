@@ -6,6 +6,8 @@
     <string name="choose">Choose a programming activity</string>
     <string name="hours">Hours spent</string>
     <string name="confirm">Confirm</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
 
     <string-array name="programming_array">
         <item>Python</item>

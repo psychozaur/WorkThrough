@@ -1,6 +1,5 @@
 package com.programming_calendar.workthrough;
 
-
 import android.graphics.drawable.Drawable;
 import android.graphics.PixelFormat;
 import android.graphics.ColorFilter;
